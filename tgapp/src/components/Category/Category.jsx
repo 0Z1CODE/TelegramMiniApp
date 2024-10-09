@@ -7,7 +7,7 @@ import equipment from "./../../assets/img/equipment.png"
 const Category = () => {
   return (
     <div className='flex-col w-full '>
-      <CategoryCard picture={pc} alt = "pc" catName={"Готові ПК"} description={"Готові ПК з гарантією"}/>
+      <CategoryCard picture={pc} alt = "pc" catName={"Готові ПК"} description={"Готові ПК з гарантією"} link = "/ready-pc"/>
       <CategoryCard picture={tower} alt = "tower" catName={"Комплектуючі для ПК"} description={"Збери сам"}/>
       <CategoryCard picture={equipment} alt = "equipment" catName={"Комп'ютерна перефірія"} description={"Девайси для вашого ПК"}/>
     </div>
