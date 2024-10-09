@@ -1,0 +1,25 @@
+{
+  "name": "telegramminiapp",
+  "version": "1.0.0",
+  "description": "TelegramMiniApp",
+  "type": "module",
+  "scripts": {
+    "app": "npm run dev --prefix tgapp",
+    "bot": "nodemon bot/bot",
+    "dev": "concurrently \"npm run app\" \"npm run bot\"",
+    "parser": "nodemon parser/parser"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "assemblyai": "^4.7.1",
+    "axios": "^1.7.7",
+    "cheerio": "^1.0.0",
+    "concurrently": "^9.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "mongoose": "^8.7.0",
+    "nodemon": "^3.1.7",
+    "telegraf": "^4.16.3"
+  }
+}
