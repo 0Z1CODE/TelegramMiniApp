@@ -5,7 +5,7 @@ import { FaHome } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <div className="flex w-full justify-between ">
+    <div className="flex w-full justify-between mt-3">
       <button className="btn w-1/3 bg-transportant border-none rounded-none">
       <FaHome size={20}/>
       </button>
