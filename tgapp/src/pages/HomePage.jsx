@@ -3,7 +3,9 @@ import Category from '../components/Category/Category'
 
 const HomePage = () => {
   return (
-   <Category/>
+   <>
+    <Category/>
+   </>
   )
 }
 

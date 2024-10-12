@@ -6,8 +6,9 @@
   "scripts": {
     "app": "npm run dev --prefix tgapp",
     "bot": "nodemon bot/bot",
-    "dev": "concurrently \"npm run app\" \"npm run bot\"",
-    "parser": "nodemon parser/parser"
+    "server": "nodemon server/main",
+    "parser": "nodemon parser/parser",
+    "dev": "concurrently \"npm run app\" \"npm run bot\" \"npm run server\""
   },
   "author": "",
   "license": "ISC",

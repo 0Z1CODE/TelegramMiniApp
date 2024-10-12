@@ -6,10 +6,11 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import path from 'path';
 import { voiceMsgHendler } from './utils/voiceHendler.js';
-
+import connectToMongoDb from '../db/mongoConneect.js';
 
 
 dotenv.config();
+
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 export const  __dirname = path.dirname(__filename); // get the name of the directory
 
@@ -29,11 +30,16 @@ bot.start((ctx) => {
 });
 
 
+
 bot.on(message("text"), async (ctx) => {
   const userMessage = ctx.message.text;
   const message = ctx.message;
+  if(userMessage === "Lol") await ctx.reply("Trururururur")
 });
 
+bot.catch(error => {
+console.log('telegraf error', error);
+});
 
 bot.on(message('voice'), async (ctx) => {
   voiceMsgHendler(__dirname, bot, ctx)
