@@ -6,7 +6,8 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import path from 'path';
 import { voiceMsgHendler } from './utils/voiceHendler.js';
-import connectToMongoDb from '../db/mongoConneect.js';
+import connectToMongoDb from '../db/mongoConnect.js';
+import User from "./../db/models/user.model.js";
 
 
 dotenv.config();
@@ -18,12 +19,25 @@ export const  __dirname = path.dirname(__filename); // get the name of the direc
 const token = process.env.BOT_TOKEN;
 
 const bot = new Telegraf(token);
+await connectToMongoDb();
 
 bot.telegram.setMyCommands([
   { command: "/start", description: "Start" },
+  { command: "/store", description: "Store" },
+  { command: "/help", description: "Halp" },
 ]);
 
-bot.start((ctx) => {
+bot.start( async (ctx) => {
+  const tgUser = ctx.from;
+  const user = await  User.findOne({telegram_id: tgUser.id});
+  if (tgUser && !user ) {
+    const newUser = new User({
+      telegram_id: tgUser.id,
+      ...tgUser,
+    });
+    await newUser.save();
+    return user;
+  }
   ctx.reply(
     "Привіт!"
   );

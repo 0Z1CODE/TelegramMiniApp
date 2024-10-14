@@ -4,7 +4,7 @@ import * as cheerio from "cheerio";
 import axios from "axios";
 dotenv.config();
 
-const PORT = process.env.PARSER_PORT || 5001;
+const PORT = process.env.PARSER_PORT || 5006;
 const parseTarget = process.env.PARSE_TARGET;
 
 const Parser = express();
