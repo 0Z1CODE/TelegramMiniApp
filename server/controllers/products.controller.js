@@ -28,6 +28,26 @@ export const editProduct = async (req, res) => {
   }
 };
 
+export const getProductsByCategory = async (req, res) => {
+  const { category } = req.params;
+  try {
+    const products = await productModel.find({ category: category });
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getProductById = async (req, res) => {
+  const { product_code } = req.params;
+  try {
+    const product = await productModel.findOne({ product_code: product_code });
+    res.status(200).json(product);
+  }
+  catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+}
 
 export const getProducts = async (req, res) => {
   try {

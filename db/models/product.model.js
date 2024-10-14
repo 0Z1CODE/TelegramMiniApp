@@ -25,6 +25,9 @@ const productSchema = new mongoose.Schema(
     info: {
       type: Array,
     },
+    performance: {
+      type: Array,
+    },
     price: {
       type: Number,
       required: true,
