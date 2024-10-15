@@ -5,15 +5,20 @@ import { FaHome } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <div className="flex w-full justify-between mt-3">
-      <button className="btn w-1/3 bg-transportant border-none rounded-none">
-      <FaHome size={20}/>
+
+
+    <div className="btm-nav static mt-3">
+      <button className="bg-accent text-blue-600">
+        <FaHome size={20} />
+        <span className="btm-nav-label">Головна</span>
       </button>
-      <button className="btn w-1/3 bg-transportant border-none rounded-none">
-      <FaHeart size={20}/>
+      <button className="bg-orange-200 text-orange-600">
+        <FaHeart size={20} />
+        <span className="btm-nav-label">Побажання</span>
       </button>
-      <button className="btn w-1/3 bg-transportant border-none rounded-none">
-        <FaShoppingCart size={20}/>
+      <button className="bg-teal-200 text-teal-600">
+        <FaShoppingCart size={20} />
+        <span className="btm-nav-label">Корзина</span>
       </button>
     </div>
   );

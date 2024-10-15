@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
 import productRoutes from "./routes/product.routes.js"
 import connectToMongoDb from '../db/mongoConnect.js';
+import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -13,12 +14,24 @@ export const __dirname = path.dirname(__filename);
 
 const app = express()
 const port = process.env.PORT || 5005
+const client = process.env.WEB_APP_URL
 
 app.use(express.json())
 app.use(cookieParser());
+app.use(cors({
+  credentials: true,
+  origin: client,
+  methods: [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+  ],
+  allowedHeaders: [
+    'Content-Type',
+  ],
+}));
 
-
-console.log(__dirname);
 
 
 app.use("/products", productRoutes)

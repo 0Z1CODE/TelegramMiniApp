@@ -1,17 +1,31 @@
-import React from 'react'
-import CategoryCard from './CategoryCard'
-import pc from "./../../assets/img/pc.png" 
-import tower from "./../../assets/img/pc-tower.png" 
-import equipment from "./../../assets/img/equipment.png" 
+import React from "react";
+import CategoryCard from "./CategoryCard";
 
 const Category = () => {
   return (
-    <div className='flex-col w-full '>
-      <CategoryCard picture={pc} alt = "pc" catName={"Готові ПК"} description={"Готові ПК з гарантією"} link = "/ready-pc"/>
-      <CategoryCard picture={tower} alt = "tower" catName={"Комплектуючі для ПК"} description={"Збери сам"}/>
-      <CategoryCard picture={equipment} alt = "equipment" catName={"Комп'ютерна перефірія"} description={"Девайси для вашого ПК"}/>
-    </div>
-  )
-}
+    <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <CategoryCard
+        alt="pc"
+        catName={"Готові ПК"}
+        description={"Готові ПК з гарантією"}
+        link="/ready-pc"
+        isActive={true}
 
-export default Category
+      />
+      <CategoryCard
+        alt="tower"
+        catName={"Комплектуючі для ПК"}
+        description={"Збери сам"}
+        isActive={false}
+      />
+      <CategoryCard
+        alt="equipment"
+        catName={"Комп'ютерна перефірія"}
+        description={"Девайси для вашого ПК"}
+        isActive={false}
+      />
+    </div>
+  );
+};
+
+export default Category;
