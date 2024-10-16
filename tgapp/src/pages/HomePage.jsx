@@ -1,9 +1,14 @@
-import React from "react";
+import React,{useEffect} from "react";
 import Category from "../components/Category/Category";
 import Bunner from "../components/Bunner/Bunner";
 import pc from "./../assets/img/icons/pc.svg";
+import useAppSettings from "../../zustand/useAppSettings";
 
 const HomePage = () => {
+  const { setPageTitle } = useAppSettings();
+  useEffect(() => {
+    setPageTitle("Головна сторінка");
+  }, []);
   return (
     <>
       <Bunner />

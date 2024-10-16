@@ -1,18 +1,10 @@
 import React from "react";
-import { useTgContext } from "../../context/tgContext";
-import ProductModal from "./../common/ProductModal";
+import ProductModal from "./Madal/ProductModal";
 import { RiDiscountPercentFill, RiPriceTag2Fill } from "react-icons/ri";
 import LoaderCircle from "../common/Loader/LoaderCircle";
 
 
 const Products = ({ products }) => {
-  const { telegramApp } = useTgContext()
-  console.log(products);
-
-  const calculateDiscountedPrice = (price, discount) => {
-    return price - (price * (discount / 100));
-  };
-
   return (
     <>
       {products ? (
@@ -48,7 +40,7 @@ const Products = ({ products }) => {
                       </p>
                     }
                     {product.discount && (
-                      <p className="text-cyan-500 font-extrabold"> &nbsp; {calculateDiscountedPrice(product.price, product.discount)}₴</p>
+                      <p className="text-cyan-500 font-extrabold"> &nbsp; {product?.discount_price}₴</p>
                     )}
                     </div>
                   }

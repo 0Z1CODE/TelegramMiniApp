@@ -10,7 +10,9 @@ export default defineConfig({
   },
   define: {
     'process.env': {
-      SERVER_URL: " https://api.marokhonko.space"
+      SERVER_URL: "https://api.marokhonko.space",
+      MONOBANK_TOKEN :"uUUVXVUVpqgXDGHNVdtqdMlscXsXFgCzaMUja-c7wr_Q",
+      MONOBANK_API: "https://api.monobank.ua",
     }
   }
 

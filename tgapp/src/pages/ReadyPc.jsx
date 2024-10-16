@@ -5,9 +5,10 @@ import Products from '../components/Products/Products'
 import image from '../assets/img/pc-image.webp';
 import useProducts from '../api/useProducts';
 import { ready_pc } from '../utils/const';
+import useAppSettings from '../../zustand/useAppSettings';
 
 const ReadyPc = () => {
-
+  const { setPageTitle } = useAppSettings();
   const { getProductsByCategory } = useProducts()
   const [products, setProducts] = useState([])
 
@@ -17,14 +18,16 @@ const ReadyPc = () => {
 
 
   const { telegramApp } = useTgContext()
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
+
   useEffect(() => {
+    setPageTitle('Готові ПК')
     fetchProducts()
-    telegramApp.BackButton.show()
-    telegramApp.BackButton.onClick(() => (navigate('/')))
-    return () => {
-      telegramApp.BackButton.hide()
-    }
+    // telegramApp.BackButton.show()
+    // telegramApp.BackButton.onClick(() => (navigate('/')))
+    // return () => {
+    //   telegramApp.BackButton.hide()
+    // }
   }, [])
 
 

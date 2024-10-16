@@ -58,6 +58,15 @@ const productSchema = new mongoose.Schema(
     sale: {
       type: Boolean,
     },
+    discount_price : {
+      type: Number,
+      default: function() {
+      if (this.discount) {
+        return this.price - (this.price * (this.discount / 100));
+      }
+      return this.price;
+    }
+    }
   },
   { timestamps: true }
 );

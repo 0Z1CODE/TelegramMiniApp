@@ -1,4 +1,4 @@
-import {Telegraf} from 'telegraf';
+import {Markup, Telegraf} from 'telegraf';
 
 import {message} from 'telegraf/filters';
 import { fileURLToPath } from 'url';
@@ -17,6 +17,7 @@ export const  __dirname = path.dirname(__filename); // get the name of the direc
 
 
 const token = process.env.BOT_TOKEN;
+const App_URL = process.env.WEB_APP_URL;
 
 const bot = new Telegraf(token);
 await connectToMongoDb();
@@ -24,7 +25,7 @@ await connectToMongoDb();
 bot.telegram.setMyCommands([
   { command: "/start", description: "Start" },
   { command: "/store", description: "Store" },
-  { command: "/help", description: "Halp" },
+  // { command: "/oldschool", description: "oldschool" },
 ]);
 
 bot.start( async (ctx) => {
@@ -43,22 +44,31 @@ bot.start( async (ctx) => {
   );
 });
 
+bot.command("store", ctx =>
+	ctx.reply(
+		"Вітаю! Перейдіть за посиланням, щоб запустити веб-додаток:",
+		Markup.inlineKeyboard([Markup.button.webApp("Перейти", App_URL)]).resize(),
+	),
+);
 
 
 bot.on(message("text"), async (ctx) => {
-  const userMessage = ctx.message.text;
-  const message = ctx.message;
+  const userMessage = await ctx.message.text;
+  const message = await ctx.message;
   if(userMessage === "Lol") await ctx.reply("Trururururur")
 });
 
-bot.catch(error => {
-console.log('telegraf error', error);
-});
+
 
 bot.on(message('voice'), async (ctx) => {
   voiceMsgHendler(__dirname, bot, ctx)
 });
 
+
+
+bot.catch(error => {
+  console.log('telegraf error', error);
+  });
 
 bot.launch();
 
