@@ -15,6 +15,9 @@ const App = () => {
     const uData = telegramApp.initDataUnsafe;
     setUserData(uData)
 
+    console.log(telegramApp);
+    
+
   }, [])
 
   

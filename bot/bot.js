@@ -8,6 +8,7 @@ import path from 'path';
 import { voiceMsgHendler } from './utils/voiceHendler.js';
 import connectToMongoDb from '../db/mongoConnect.js';
 import User from "./../db/models/user.model.js";
+import { notDeepEqual } from 'assert';
 
 
 dotenv.config();
@@ -46,19 +47,26 @@ bot.start( async (ctx) => {
 
 bot.command("store", ctx =>
 	ctx.reply(
-		"Вітаю! Перейдіть за посиланням, щоб запустити веб-додаток:",
-		Markup.inlineKeyboard([Markup.button.webApp("Перейти", App_URL)]).resize(),
+		"Launch mini app from keyboard!",
+		Markup.keyboard([Markup.button.webApp("Launch", App_URL)]).resize(),
 	),
 );
 
+// bot.on(message("text"), async (ctx) => {
+//   const userMessage = await ctx.message.text;
+//   const message = await ctx.message;
+//   await ctx.reply("Trururururur")
+//   // if(userMessage === "Lol") await ctx.reply("Trururururur")
 
-bot.on(message("text"), async (ctx) => {
-  const userMessage = await ctx.message.text;
-  const message = await ctx.message;
-  if(userMessage === "Lol") await ctx.reply("Trururururur")
+// });
+
+bot.on(message('web_app_data'), async (ctx) => {
+  console.log(ctx.update.message.web_app_data);
+  ctx.reply("Надати своє місцезнаходження", Markup.keyboard([
+    Markup.button.locationRequest("Надати місцезнаходження")
+  ]));
+  // ctx.reply("Дякужмо", Markup.removeKeyboard());
 });
-
-
 
 bot.on(message('voice'), async (ctx) => {
   voiceMsgHendler(__dirname, bot, ctx)
