@@ -2,40 +2,40 @@ import React, { useEffect,useState } from 'react'
 import Header from '../components/common/Header'
 import Footer from '../components/common/Footer'
 import { Outlet, useNavigate, useLocation} from "react-router-dom";
-import { useTgContext } from './../context/tgContext';
+// import { useTgContext } from './../context/tgContext';
 
 
 const MainLayout = () => {
-  const { telegramApp } = useTgContext()
+  // const { telegramApp } = useTgContext()
   const location = useLocation();
   const navigate = useNavigate();
  const [history, setHistory] = useState([]);
 
-useEffect(() => {
-  setHistory([...history, location.pathname]);
-  console.log(history);
+// useEffect(() => {
+//   setHistory([...history, location.pathname]);
+//   console.log(history);
  
   
   
-  telegramApp.BackButton.show()
-  telegramApp.BackButton.onClick(() => {
-    if (history.length > 1) {
-      navigate(history[history.length - 1]);
-      history.pop();
-    } else {
-      navigate('/');
-    }
-  })
+//   telegramApp.BackButton.show()
+//   telegramApp.BackButton.onClick(() => {
+//     if (history.length > 1) {
+//       navigate(history[history.length - 1]);
+//       history.pop();
+//     } else {
+//       navigate('/');
+//     }
+//   })
 
-  if (location.pathname === '/') {
-    telegramApp.BackButton.hide()
-    setHistory([]);
-  }
+//   if (location.pathname === '/') {
+//     telegramApp.BackButton.hide()
+//     setHistory([]);
+//   }
     
 
-}, [location]);
+// }, [location]);
 
-console.log(history);
+// console.log(history);
 
 
   

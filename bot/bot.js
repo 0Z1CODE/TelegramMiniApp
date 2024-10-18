@@ -38,10 +38,12 @@ bot.start( async (ctx) => {
       ...tgUser,
     });
     await newUser.save();
+  
+    
     return user;
   }
   ctx.reply(
-    "Привіт!"
+    `Hello ${tgUser.first_name}!`, Markup.inlineKeyboard([Markup.button.webApp("App", App_URL)]).resize(),
   );
 });
 

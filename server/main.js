@@ -6,6 +6,7 @@ import connectToMongoDb from '../db/mongoConnect.js';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import telegramBotRoutes from "./routes/telegramBot.routes.js"
 
 dotenv.config()
 
@@ -35,6 +36,7 @@ app.use(cors({
 
 
 app.use("/products", productRoutes)
+app.use("/telegram", telegramBotRoutes)
 app.use('/images',  express.static(path.join(__dirname, 'images')));
 
 
