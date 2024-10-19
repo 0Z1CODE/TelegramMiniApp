@@ -69,7 +69,7 @@ const onSubmit = (data) => console.log(data)
 
   return (
     <>
-      <button onClick={sendGeo}>Send geo</button>
+      {/* <button onClick={sendGeo}>Send geo</button> */}
       <OrderMarkdown product={product} register={register} errors={errors} handleSubmit ={handleSubmit} onSubmit = {onSubmit}/>
     </>
   );
