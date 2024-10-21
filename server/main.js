@@ -8,6 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import telegramBotRoutes from './routes/telegramBot.routes.js';
 import orderRoutes from './routes/orders.routes.js';
+import paymantRoutes from './routes/paymants.routes.js';
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use(
 
 app.use('/products', productRoutes);
 app.use('/order', orderRoutes);
+app.use('/payments', paymantRoutes);
 app.use('/telegram', telegramBotRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 

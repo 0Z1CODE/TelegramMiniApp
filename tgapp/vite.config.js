@@ -14,6 +14,7 @@ export default defineConfig({
       MONOBANK_TOKEN :"uUUVXVUVpqgXDGHNVdtqdMlscXsXFgCzaMUja-c7wr_Q",
       MONOBANK_API: "https://api.monobank.ua",
       NOVA_POST_API_KEY: "89c48bd8d210e058887408c5c5a8b97d",
+      NODE_ENV: "development"
     }
   }
 

@@ -3,16 +3,29 @@ import mongoose from 'mongoose';
 const orderSchema = new mongoose.Schema(
 	{
 		order_id: {
-			type: Number,
+			type: String,
 			unique: true,
-			default: "11",
+			required: true,
+	
 		},
 		user_id: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'User'
+			ref: 'User',
+			required: true
 		},
+		telegram_id: {
+			type: Number,
+			required: true
+		},
+		
 		products: [
 			{
+				product:{
+					type: mongoose.Schema.Types.ObjectId,
+					ref: 'Product',
+					required: true
+				},
+
 				product_code: {
 					type: String,
 					required: true
@@ -32,19 +45,14 @@ const orderSchema = new mongoose.Schema(
 				},
 				total: {
 					type: Number,
-					required: true,
-					default: function() {
-						return this.quantity * this.price;
-					}
+					required: true
 				}
 			}
 		],
 		total_price: {
 			type: Number,
 			required: true,
-			default: function() {
-				return this.products.reduce((total, product) => total + product.quantity * product.total, 0);
-			}
+			
 		},
 		oreder_owner: {
 			first_name: {

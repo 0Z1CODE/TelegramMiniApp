@@ -6,15 +6,20 @@ import useAppSettings from '../../../zustand/useAppSettings'
 import { useForm } from "react-hook-form"
 import useDelivery from '../../api/useDelivery'
 import OrderMarkdown from './OrderMarkdown'
+import useOrder from '../../api/useOerder'
+import useUserSettings from '../../../zustand/useUserSettings';
 
 
 const QuickOrder = () => {
   // const { getAreas, getCitys} = useDelivery()
+  const { createOrder } = useOrder()
   const { getProductById, loading } = useProducts()
   const [deliveryData, setDeliveryData] = useState(null)
   const { setPageTitle } = useAppSettings()
   const [product, setProduct] = useState(null)
   // const { telegramApp } = useTgContext()
+  const nav = useNavigate()
+  const { currentUser } = useUserSettings()
   const params = useParams()
   const {
     register,
@@ -22,7 +27,8 @@ const QuickOrder = () => {
     watch,
     getValues,
     formState: { errors },
-  } = useForm({ mode: "onBlur" });
+  } = useForm({ reValidateMode: "onChange", mode: "onChange", defaultValues: { first_name: currentUser?.first_name, last_name: currentUser?.last_name } });
+  console.log(currentUser);
 
   const getProduct = useCallback(async () => {
     await getProductById(params.product_code).then((data) => setProduct(data)).catch((error) => console.log(error));
@@ -41,36 +47,39 @@ const QuickOrder = () => {
 
 
 
+  const onSubmit = (data) => {
+    const orderData = {
+      telegram_id: currentUser?.id,
+      products: [
+        {
+          product_code: product?.product_code,
+          quantity: 1,
+        }
+      ],
+      delivery: data.delivery,
+      payment: "online",
+      oreder_owner: {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        phone: data.phone,
+        email: data.email,
+      },
+    }
+    createOrder(orderData)
+    .then((data) => nav(`/order-cinfirm/${data.data.order_id}`))
+    .catch((error) => console.log(error));
+  }
 
-  // useEffect(() => {
-  //   if (watch("delivery") === "delivery") {
-  //     telegramApp.MainButton.show();
-  //     telegramApp.MainButton.setText("Надати своє місцезнаходження");
-  //     telegramApp.MainButton.onClick(() => {
-  //     telegramApp.sendData(JSON.stringify({ location: true, productTitle: product?.title }));
-  //     });
-  //     // telegramApp.MainButton.hide();
-  //   }
-  //   return () => {
-  //     telegramApp.MainButton.hide()
-  //   }
-
-
-  // }, [watch("delivery")])
-
-
-const onSubmit = (data) => console.log(data)
-
-// const sendGeo = (cb) => {
-//   telegramApp.showConfirm('Дякуємо за ваше замовлення' )
-// }
+  // const sendGeo = (cb) => {
+  //   telegramApp.showConfirm('Дякуємо за ваше замовлення' )
+  // }
 
 
 
   return (
     <>
       {/* <button onClick={sendGeo}>Send geo</button> */}
-      <OrderMarkdown product={product} register={register} errors={errors} handleSubmit ={handleSubmit} onSubmit = {onSubmit}/>
+      <OrderMarkdown product={product} register={register} errors={errors} handleSubmit={handleSubmit} onSubmit={onSubmit} />
     </>
   );
 }

@@ -13,8 +13,11 @@ export const validateDataFromBot = async (req, res) => {
   const secret = CryptoJS.HmacSHA256(TELEGRAM_BOT_TOKEN, "WebAppData");
   const _hash = CryptoJS.HmacSHA256(dataToCheck.join("\n"), secret).toString(CryptoJS.enc.Hex);
   
+  // const userData = initData.get("user_data");
+
   if(_hash === hash) {
-    res.status(200).json({status: "ok"});
+    const userData = JSON.parse(initData.get("user"));
+    res.status(200).json({status: "ok", userData});
   } else {
     res.status(400).json({status: "error"});
   }
