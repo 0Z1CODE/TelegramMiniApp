@@ -12,7 +12,8 @@ const paymentSchema = new mongoose.Schema(
 		},
 		status: {
 			type: String,
-			required: true
+			required: true,
+			default: 'pending'
 		},
 		mono_link: {
 			type: String,

@@ -4,7 +4,7 @@ import useOrder from '../../api/useOerder.js'
 import { FaFileCircleCheck } from "react-icons/fa6";
 import {useTgContext} from '../../context/tgContext'
 import usePaymant from '../../api/usePaymant'
-
+import useUserSettings from '../../../zustand/useUserSettings.js';
 
 const OrderConfirmation = () => {
   const navigate = useNavigate()
@@ -12,10 +12,11 @@ const OrderConfirmation = () => {
   const [orderInfo, setOrderInfo] = useState(null)
   const { telegramApp } = useTgContext()
   const { createPaymant } = usePaymant()
-
+  const { currentUser } = useUserSettings()
 
 
   const getOrder = useCallback(async () => {
+    
     await getOrderInfo().then((data) => setOrderInfo(data)).catch((error) => console.log(error));
     return () => {
       setOrderInfo(null);
@@ -35,9 +36,14 @@ const OrderConfirmation = () => {
 
 const sendOrder = async () => {
   const data = {
+    monobank: {
     amount: orderInfo?.total_price * 100,
     ccr: 980,
     redirectUrl: "https://marokhonko.space/confirm-payment",
+    total_price: orderInfo?.total_price,
+    order_id: orderInfo?.order_id,
+    telegram_id: currentUser.id
+   }
   }
   createPaymant(data)
 }
@@ -82,7 +88,7 @@ const sendOrder = async () => {
 
 
   return (
-    <section className="card-body flex flex-col items-center justify-center">
+    <section className="card-body flex flex-col items-center justify-center ">
       <h1>ВАШЕ ЗАМОВЛЕННЯ СФОРМОВАНО</h1>
       <FaFileCircleCheck className="w-10 h-10 text-center text-accent" />
       <div>
