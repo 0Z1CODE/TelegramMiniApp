@@ -1,7 +1,6 @@
 import { useState } from "react";
 // import toast from "react-hot-toast";
 import $api from "./http";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 
 
@@ -9,7 +8,6 @@ import axios from "axios";
 
 const usePaymant = () => {
   const [loading, setLoading] = useState(false);
-  const params = useParams();
 
 
 const createPaymant = async (p_data) => {
@@ -31,18 +29,15 @@ const createPaymant = async (p_data) => {
   const invoice = await axios.post(`${api}/api/merchant/invoice/create`, p_data?.monobank, {
     headers: {
       'X-Token': token,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     }
   }
   ).then((data) => data)
   .catch((error) => console.log(error));
   
-
-console.log({invoice});
-
-
   const invoiceId = invoice.data.invoiceId;
   const pageUrl = invoice.data.pageUrl;
+  console.log(pageUrl);
 
   if (invoiceId) {
    await paymentToDB({...p_data, ...invoice}).then(
@@ -51,12 +46,33 @@ console.log({invoice});
   }
 
   if (pageUrl) {
-    window.location.href = pageUrl;
+    const modifiedUrl = pageUrl.replace("https://pay.monobank.ua/", "https://pay.monobank.ua/embed/");
+    console.log(modifiedUrl);
+
+    // window.open(pageUrl, "_blank");
+    window.location.href = (modifiedUrl+"?enablejsapi=1");
+  
+    
     telegramApp.MainButton.hide();
   }
-
 }
+
+//  const checkPaymant = async () => {
+//       // const link = `https://api.monobank.ua/api/merchant/invoice/status?invoiceId=${invoiceId}`;
+//     // if(invoiceId) {
+//     //   await axios.get(link, {
+//     //     headers: {
+//     //       'X-Token': token,
+//     //       'Content-Type': 'application/json'
+//     //     }
+//     //   }).then((data) => console.log(data)).catch((error) => console.log(error));
+//     // }
+// }
+
 
   return { createPaymant, loading };
 };
 export default usePaymant;
+
+
+

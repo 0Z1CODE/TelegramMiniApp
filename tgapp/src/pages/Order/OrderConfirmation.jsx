@@ -32,8 +32,6 @@ const OrderConfirmation = () => {
 
 
 
-
-
 const sendOrder = async () => {
   const data = {
     monobank: {
@@ -49,37 +47,17 @@ const sendOrder = async () => {
 }
 
 
-
-    
-
-
-    // const link = `https://api.monobank.ua/api/merchant/invoice/status?invoiceId=${invoiceId}`;
-    // if(invoiceId) {
-    //   await axios.get(link, {
-    //     headers: {
-    //       'X-Token': token,
-    //       'Content-Type': 'application/json'
-    //     }
-    //   }).then((data) => console.log(data)).catch((error) => console.log(error));
-    // }
-
-
-
-
-
-
-
-
   useEffect(() => {
-    telegramApp.MainButton.show()
-    telegramApp.MainButton.text = "Сплатити"
-    telegramApp.MainButton.onClick(sendOrder)
-    return () => {
-      telegramApp.MainButton.hide()
-    }
-    
- 
-  }, []);
+ if (orderInfo) {
+  telegramApp.MainButton.show()
+  telegramApp.MainButton.text = "Сплатити"
+  telegramApp.MainButton.onClick(sendOrder)
+  return () => {
+    telegramApp.MainButton.hide()
+  }
+ }
+  
+  }, [orderInfo]);
 
 
 
@@ -101,7 +79,7 @@ const sendOrder = async () => {
         <p>Доставка: <span className="text-accent"> {orderInfo?.delivery === "delivery" ? "Доставка" : "Самовивіз"}</span></p>
         <p>Оплата: <span className="text-accent"> {orderInfo?.payment === "cash" ? "Оплата при отриманні" : "Онлайн"}</span></p>
       </div>
-<button onClick={sendOrder}>Mono</button>
+{/* <button onClick={sendOrder}>Mono</button> */}
     </section>
   )
 }
