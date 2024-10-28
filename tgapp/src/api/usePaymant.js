@@ -15,17 +15,17 @@ const usePaymant = () => {
     const api = process.env.MONOBANK_API;
     const token = process.env.MONOBANK_TOKEN;
 
-    const paymentToDB = async (p_data) => {
-      setLoading(true);
-      try {
-        const response = await $api.post('/payments', p_data);
-        setLoading(false);
-        return response;
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-      }
-    };
+    // const paymentToDB = async (p_data) => {
+    //   setLoading(true);
+    //   try {
+    //     const response = await $api.post('/payments', p_data);
+    //     setLoading(false);
+    //     return response;
+    //   } catch (error) {
+    //     console.log(error);
+    //     setLoading(false);
+    //   }
+    // };
 
     const invoice = await axios
       .post(`${api}/api/merchant/invoice/create`, p_data?.monobank, {
@@ -37,16 +37,9 @@ const usePaymant = () => {
       .then((data) => data)
       .catch((error) => console.log(error));
 
-
     if (invoice.data.invoiceId) {
-      await paymentToDB({ ...p_data, ...invoice }).then((data) => {
-        const payment = data.data;
-        window.open(invoice.data.pageUrl, '_blank');
-        console.log(`/confirm-payment/${payment._id}`);
-        
-        navigate(`/confirm-payment/${payment._id}`);
-        
-      });
+      window.open(invoice.data.pageUrl, '_blank');
+      navigate(`/confirm-payment/${invoice.data.invoiceId}`);
     }
   };
 

@@ -38,6 +38,7 @@ const sendOrder = async () => {
       amount: orderInfo?.total_price * 100,
       ccr: 980,
       redirectUrl: window.location.href,
+      webHookUrl: "https://api.marokhonko.space/payments",
       total_price: orderInfo?.total_price,
       order_id: orderInfo?.order_id,
       telegram_id: currentUser.id

@@ -1,8 +1,9 @@
 import express from "express";
-import { createPayment } from "../controllers/payment.controller.js";
+import {paymentHook} from "../controllers/payment.controller.js";
 const router = express.Router();
 
-router.post('/', createPayment);
+router.post('/', paymentHook);
+// router.post('/monobank', monoCb);
 
 
 
