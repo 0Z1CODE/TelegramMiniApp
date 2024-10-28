@@ -1,10 +1,11 @@
 import React from "react";
-import ProductModal from "./Madal/ProductModal";
 import { RiDiscountPercentFill, RiPriceTag2Fill } from "react-icons/ri";
 import LoaderCircle from "../common/Loader/LoaderCircle";
+import { useNavigate } from "react-router-dom";
 
 
 const Products = ({ products }) => {
+  const navigate = useNavigate();
   return (
     <>
       {products ? (
@@ -26,35 +27,40 @@ const Products = ({ products }) => {
 
                     <p className="font-light text-ellipsis whitespace-nowrap overflow-hidden">{product.description}</p>
 
-                  {
-                    <div className="flex text-ellipsis whitespace-nowrap overflow-hidden">
-                    <p className="font-bold"> Ціна:  &nbsp; </p>
                     {
-                      product.discount ? (
-                        <p className="line-through">
-                        <span className="font-extrabold">{product.price}</span>₴
-                      </p>
-                      )
-                      : <p>
-                           <span className="font-extrabold">{product.price}</span>₴
-                      </p>
+                      <div className="flex text-ellipsis whitespace-nowrap overflow-hidden">
+                        <p className="font-bold"> Ціна:  &nbsp; </p>
+                        {
+                          product.discount ? (
+                            <p className="line-through">
+                              <span className="font-extrabold">{product.price}</span>₴
+                            </p>
+                          )
+                            : <p>
+                              <span className="font-extrabold">{product.price}</span>₴
+                            </p>
+                        }
+                        {product.discount && (
+                          <p className="text-cyan-500 font-extrabold"> &nbsp; {product?.discount_price}₴</p>
+                        )}
+                      </div>
                     }
-                    {product.discount && (
-                      <p className="text-cyan-500 font-extrabold"> &nbsp; {product?.discount_price}₴</p>
-                    )}
-                    </div>
-                  }
                   </div>
                 </div>
               </div>
-              <ProductModal
-                product_alias={product.product_code}
-                product_name={product.title}
-              />
+              <button
+                className="bg-accent w-full text-white py-2 bg-opacity-65"
+                onClick={() => (
+                  navigate(`/ready-pc/${product.product_code}`)
+                )}
+              >
+                Детальніше
+              </button>
+
             </div>
           ))}
         </div>
-      ) : (<LoaderCircle  />)}
+      ) : (<LoaderCircle />)}
     </>
   );
 };

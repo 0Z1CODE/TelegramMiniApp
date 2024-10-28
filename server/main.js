@@ -9,13 +9,14 @@ import { fileURLToPath } from 'url';
 import telegramBotRoutes from './routes/telegramBot.routes.js';
 import orderRoutes from './routes/orders.routes.js';
 import paymantRoutes from './routes/paymants.routes.js';
+import {app, io, httpServer} from './soket.js';
 
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename);
 
-const app = express();
+// const app = express();
 const port = process.env.PORT || 5005;
 const client = process.env.WEB_APP_URL;
 
@@ -39,7 +40,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 const start = async () => {
 	try {
 		await connectToMongoDb();
-		app.listen(port, () => {
+		httpServer.listen(port, () => {
 			console.log(`Server is running on port ${port}`);
 		});
 	} catch (error) {

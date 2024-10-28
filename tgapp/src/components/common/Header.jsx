@@ -6,7 +6,7 @@ const Header = () => {
   const { currentUser } = useUserSettings()
   return (
     <div className='bg-accent flex w-full p-3 bold mb-3 ' >
-    <h3 className='text-white font-semibold'> {pageTitle} {currentUser?.id}</h3>
+    <h3 className='text-white font-semibold'> {pageTitle} </h3>
     </div>
   )
 }

@@ -2,11 +2,11 @@ import React from 'react'
 import { IoClose } from 'react-icons/io5'
 import { FaRegHeart } from 'react-icons/fa'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
-import { equilPC } from '../../../utils/const'
+import { equilPC } from '../../utils/const'
 import '@splidejs/react-splide/css';
 
 
-const ProductPCMarkdown = ({dispatch, product}) => {
+const ProductPCMarkdown = ({product}) => {
 
   const prepearPCoptions = (info) => {
     let options = []
@@ -56,9 +56,7 @@ const ProductPCMarkdown = ({dispatch, product}) => {
 
   return (
     <>
-      <div className="modal-box">
 
-        <IoClose className="text-accent w-6 h-6 cursor-pointer  absolute right-2 top-2 " onClick={() => dispatch({ type: "CLOSE_MODAL" })} />
 
         <div className="mb-3 ">
           <Splide aria-label="My Favorite Images">
@@ -95,7 +93,7 @@ const ProductPCMarkdown = ({dispatch, product}) => {
 
         </div>
 
-
+        <div className='divider'></div>
         <div className="modal-action flex items-center">
           <p className="text-accent font-bold">Ціна: {product?.discount_price ? product?.discount_price : product?.price}₴</p>
           <button className="btn btn-secondary text-white">
@@ -106,7 +104,6 @@ const ProductPCMarkdown = ({dispatch, product}) => {
             <FaRegHeart className="text-orange-500" />
           </button>
         </div>
-      </div>
     </>
   )
 }

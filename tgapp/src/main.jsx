@@ -4,11 +4,14 @@ import App from "./App.jsx";
 import "./index.css";
 import { TgProvider } from "./context/tgContext";
 import { BrowserRouter } from "react-router-dom";
+import { SocketContextProvider } from "./context/SocketContext.jsx";
 
 createRoot(document.getElementById("root")).render(
     <TgProvider>
       <BrowserRouter>
+      <SocketContextProvider>
         <App />
+        </SocketContextProvider>
       </BrowserRouter>
     </TgProvider>
 );

@@ -35,17 +35,16 @@ const OrderConfirmation = () => {
 const sendOrder = async () => {
   const data = {
     monobank: {
-    amount: orderInfo?.total_price * 100,
-    ccr: 980,
-    redirectUrl: "https://marokhonko.space/confirm-payment",
-    total_price: orderInfo?.total_price,
-    order_id: orderInfo?.order_id,
-    telegram_id: currentUser.id
-   }
+      amount: orderInfo?.total_price * 100,
+      ccr: 980,
+      redirectUrl: window.location.href,
+      total_price: orderInfo?.total_price,
+      order_id: orderInfo?.order_id,
+      telegram_id: currentUser.id
+    }
   }
   createPaymant(data)
 }
-
 
   useEffect(() => {
  if (orderInfo) {
@@ -58,11 +57,6 @@ const sendOrder = async () => {
  }
   
   }, [orderInfo]);
-
-
-
-
-
 
 
   return (
