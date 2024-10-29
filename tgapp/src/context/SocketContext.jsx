@@ -19,7 +19,7 @@ export const SocketContextProvider = ({ children }) => {
     if (currentUser) {
       const socket = io(server_url, {
         query: {
-          telegram_id: currentUser.id,
+          sysId: currentUser.sysId,
         }
       });
       setSocket(socket);

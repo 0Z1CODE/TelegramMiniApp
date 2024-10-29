@@ -34,15 +34,15 @@ const OrderConfirmation = () => {
 
 const sendOrder = async () => {
   const data = {
-    monobank: {
+    for_mono: {
       amount: orderInfo?.total_price * 100,
       ccr: 980,
       redirectUrl: window.location.href,
-      webHookUrl: "https://api.marokhonko.space/payments",
-      total_price: orderInfo?.total_price,
+      webHookUrl: "https://api.marokhonko.space/payments/hook",
+    },
+     
       order_id: orderInfo?.order_id,
       telegram_id: currentUser.id
-    }
   }
   createPaymant(data)
 }

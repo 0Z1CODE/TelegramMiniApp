@@ -1,49 +1,57 @@
-import { getReceiversSocketId, io} from './../soket.js'; // Adjust the import path as necessary
+import {io} from './../soket.js'; // Adjust the import path as necessary
 import Payment from './../../db/models/payment.model.js'; // Adjust the import path as necessary
 import Order from './../../db/models/order.model.js'; // Adjust the import path as necessary
 
-// export const createPayment = async (req, res) => {
-//   const { monobank, data } = req.body;
+export const createPayment = async (req, res) => {
+ const data = req.body
 
-//   const order = await Order.findOne({ order_id: monobank.order_id });
+  const order = await Order.findOne({ order_id: data.order_id });
 
-//   const payment = {
-//     order_id: order?._id,
-//     user_id: order?.user_id,
-//     status: 'pending',
-//     mono_link: data?.pageUrl,
-//     invoiceId: data?.invoiceId,
-//     total_price: monobank?.total_price
-//   };
-//   const newPayment = new Payment(payment);
+  const payment = {
+    order_id: order?._id,
+    user_id: order?.user_id,
+    pageUrl: data?.pageUrl,
+    invoiceId: data?.invoiceId,
+  };
+  const newPayment = new Payment(payment);
 
 
-//   try {
-//     await newPayment.save();
-
-//     // Emit socket event
-//     const receiverSocketId = getReceiversSocketId(order?.user_id);
-//     if (receiverSocketId) {
-//       io.to(receiverSocketId).emit('paymentCreated', newPayment);
-//     }
-
-//     res.status(201).json(newPayment);
-//   } catch (error) {
-//     res.status(409).json({ message: error.message });
-//   }
-// };
+  try {
+    await newPayment.save();
+    res.status(201).json(newPayment);
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+};
 
 
 export const paymentHook = async (req, res) => {
+  const data = req.body
   try {
-  console.log("_______________________");
-  console.log('data', req.body);
-  console.log("_______________________");
-  res.status(200).json({ message: 'Payment status updated' });
-  
-} catch (error) {
-  res.status(409).json({ message: error.message });
-}
+    const payment = await Payment.findOneAndUpdate(
+      { invoiceId: data.invoiceId },
+      { $set: data },
+      { new: true }
+    );
+
+    if (!payment) {
+      return res.status(404).json({ message: 'Payment not found' });
+    }
+
+    // Emit socket event
+
+  if (payment) {
+    io.emit('paymentUpdated', payment);
+  }
+
+    res.status(200).json(payment);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+ 
+
+
+ 
 };
 
 

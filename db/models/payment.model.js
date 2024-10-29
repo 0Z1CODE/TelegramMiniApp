@@ -11,12 +11,18 @@ const paymentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-
+  pageUrl: {
+    type: String,
+    require: true,
+  },
   status: {
     type: String,
+    default: "created",
+    require: true
   },
   invoiceId: {
     type: String,
+    require: true,
   },
   payMethod: {
     type: String,

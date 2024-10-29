@@ -15,46 +15,32 @@ const usePaymant = () => {
     const api = process.env.MONOBANK_API;
     const token = process.env.MONOBANK_TOKEN;
 
-    // const paymentToDB = async (p_data) => {
-    //   setLoading(true);
-    //   try {
-    //     const response = await $api.post('/payments', p_data);
-    //     setLoading(false);
-    //     return response;
-    //   } catch (error) {
-    //     console.log(error);
-    //     setLoading(false);
-    //   }
-    // };
-
     const invoice = await axios
-      .post(`${api}/api/merchant/invoice/create`, p_data?.monobank, {
+      .post(`${api}/api/merchant/invoice/create`, p_data?.for_mono, {
         headers: {
           'X-Token': token,
           'Content-Type': 'application/json',
         },
       })
-      .then((data) => data)
+      .then((res) => {
+        const { data } = res;
+        console.log("data", data);
+        
+        return $api.post('/payments', {
+          ...p_data,
+          pageUrl: data.pageUrl,
+          invoiceId: data.invoiceId,
+        });
+      })
       .catch((error) => console.log(error));
 
     if (invoice.data.invoiceId) {
+      console.log(111111);
+
       window.open(invoice.data.pageUrl, '_blank');
       navigate(`/confirm-payment/${invoice.data.invoiceId}`);
     }
   };
-
-  //  const checkPaymant = async () => {
-  //       // const link = `https://api.monobank.ua/api/merchant/invoice/status?invoiceId=${invoiceId}`;
-  //     // if(invoiceId) {
-  //     //   await axios.get(link, {
-  //     //     headers: {
-  //     //       'X-Token': token,
-  //     //       'Content-Type': 'application/json'
-  //     //     }
-  //     //   }).then((data) => console.log(data)).catch((error) => console.log(error));
-  //     // }
-  // }
-
   return { createPaymant, loading };
 };
 export default usePaymant;

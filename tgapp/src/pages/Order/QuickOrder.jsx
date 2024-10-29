@@ -28,7 +28,6 @@ const QuickOrder = () => {
     getValues,
     formState: { errors },
   } = useForm({ reValidateMode: "onChange", mode: "onChange", defaultValues: { first_name: currentUser?.first_name, last_name: currentUser?.last_name } });
-  console.log(currentUser);
 
   const getProduct = useCallback(async () => {
     await getProductById(params.product_code).then((data) => setProduct(data)).catch((error) => console.log(error));
@@ -70,15 +69,9 @@ const QuickOrder = () => {
     .catch((error) => console.log(error));
   }
 
-  // const sendGeo = (cb) => {
-  //   telegramApp.showConfirm('Дякуємо за ваше замовлення' )
-  // }
-
-
 
   return (
     <>
-      {/* <button onClick={sendGeo}>Send geo</button> */}
       <OrderMarkdown product={product} register={register} errors={errors} handleSubmit={handleSubmit} onSubmit={onSubmit} />
     </>
   );
