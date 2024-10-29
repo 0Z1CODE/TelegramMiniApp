@@ -40,9 +40,8 @@ const sendOrder = async () => {
       redirectUrl: window.location.href,
       webHookUrl: "https://api.marokhonko.space/payments/hook",
     },
-     
-      order_id: orderInfo?.order_id,
-      telegram_id: currentUser.id
+    order_id: orderInfo?.order_id,
+    telegram_id: currentUser.id
   }
   createPaymant(data)
 }

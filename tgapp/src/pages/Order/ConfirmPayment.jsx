@@ -1,47 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import usePaymant from '../../api/usePaymant';
-import { useParams } from 'react-router-dom';
-import { useSocketContext } from "./../../context/SocketContext"
+import { usePaumantHook } from '../../hooks/listenPaymentHook';
+import useAppSettings from './../../../zustand/useAppSettings';
+
 
 
 const ConfirmPayment = () => {
-  const { socket } = useSocketContext()
-  const { _id } = useParams();
+  const { setPageTitle } = useAppSettings();
+  const { payment } = usePaumantHook();
 
-
-  
   useEffect(() => {
-    const handlePaymentUpdated = (updatedPayment) => {
-      if (updatedPayment.invoiceId === _id) {
-        // Handle the updated payment information
-        console.log('Payment updated:', updatedPayment);
-      }
-    };
-
-    socket.on('paymentUpdated', handlePaymentUpdated);
-
+    setPageTitle("Підтвердження платежу");
     return () => {
-      socket.off('paymentUpdated', handlePaymentUpdated);
+      setPageTitle("");
     };
-  }, [socket, _id]);
-
-
-
-
-
-
+  }, []);
   return (
-    <div>
-      <h1>Confirm Payment</h1>
-      {/* {payment ? (
+    <div className='flex flex-col items-center justify-center h-full'>
+      {payment?.status !== "success" ? (
         <div>
-          <p>Status: {payment.status}</p>
-          <p>Total Price: {payment.total_price}</p>
-          <p>Invoice ID: {payment.invoiceId}</p>
+          <h2>Ваш платіж успішно здійснено. Дякуємо за покупку.</h2>
+          <div> Сума: {(payment?.amount)/100} </div>
+          <div> Наш адміністратор скоро звяжеться з Вами </div>
+
+
         </div>
       ) : (
-        <p>Loading...</p>
-      )} */}
+        <>
+          <h1>Обробка платежу... {payment?.status}</h1>
+          <span className="loading loading-bars text-accent loading-lg"></span>
+        </>
+      )}
     </div>
   );
 };
