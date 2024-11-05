@@ -9,9 +9,17 @@ import { fileURLToPath } from 'url';
 import telegramBotRoutes from './routes/telegramBot.routes.js';
 import orderRoutes from './routes/orders.routes.js';
 import paymantRoutes from './routes/paymants.routes.js';
+import userRoutes from './routes/user.routes.js';
 import {app, io, httpServer} from './soket.js';
+import bodyParser from 'body-parser';
+import { Telegraf } from 'telegraf';
+import botRoutes from './routes/telegraf.routes.js';
+
+
 
 dotenv.config();
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename);
@@ -19,9 +27,11 @@ export const __dirname = path.dirname(__filename);
 // const app = express();
 const port = process.env.PORT || 5005;
 const client = process.env.WEB_APP_URL;
+const SERVER_URL = process.env.SERVER_URL;
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.json());
 app.use(
 	cors({
 		credentials: true,
@@ -32,10 +42,16 @@ app.use(
 );
 
 app.use('/products', productRoutes);
+app.use('/users', productRoutes);
 app.use('/order', orderRoutes);
 app.use('/payments', paymantRoutes);
 app.use('/telegram', telegramBotRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/telegraf', botRoutes);
+
+
+
+
 
 const start = async () => {
 	try {
@@ -49,3 +65,4 @@ const start = async () => {
 };
 
 start();
+

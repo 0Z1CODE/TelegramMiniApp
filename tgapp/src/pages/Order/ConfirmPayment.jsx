@@ -16,7 +16,7 @@ const ConfirmPayment = () => {
   }, []);
   return (
     <div className='flex flex-col items-center justify-center h-full'>
-      {payment?.status !== "success" ? (
+      {payment?.status === "success" ? (
         <div>
           <h2>Ваш платіж успішно здійснено. Дякуємо за покупку.</h2>
           <div> Сума: {(payment?.amount)/100} </div>

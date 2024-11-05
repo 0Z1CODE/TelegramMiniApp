@@ -19,17 +19,17 @@ export const getReceiversSocketId = (receiverId) => {
 
 
 io.on('connection', (socket) => {
-	const sysId = socket.handshake.query.sysId;
+	let sysId = socket.handshake.query.sysId;
 	console.log(`A user ${sysId} connected`);
 
 	if (!sysId) {
-    console.error('Missing telegram_id in handshake query');
+    console.error('Missing sysId in handshake query');
     socket.disconnect(true);
     return;
   }
 
 	if (typeof sysId !== 'string' || sysId.trim() === '') {
-    console.error('Invalid telegram_id');
+    console.error('Invalid sysId');
     socket.disconnect(true);
     return;
   }

@@ -4,6 +4,7 @@ import axios from "axios";
 import fs from "fs";
 import path from "path";
 import { link } from "telegraf/format";
+import { log } from "console";
 
 config();
 
@@ -45,6 +46,8 @@ export const voiceMsgHendler = async (__dirname, bot, ctx) => {
     language_detection: true,
   });
 
+  console.log("Transcript:", transcript);
+  
 
 //delete the file
   fs.unlink(filePath, (err) => {

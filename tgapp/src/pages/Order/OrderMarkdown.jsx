@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import InputMask from 'react-input-mask';
 import { useNavigate } from 'react-router-dom';
+import { RiShareForward2Line } from "react-icons/ri";
+import { useTgContext } from '../../context/tgContext';
 
 
-const OrderMarkdown = ({ product, register, errors, handleSubmit, onSubmit, dirtyFields }) => {
+
+const OrderMarkdown = ({ product, register, errors, handleSubmit, onSubmit, dirtyFields, setValue }) => {
   const inputClasses = (error) => {
     if (error) {
       return 'input input-bordered w-full max-w-lg input-error'
@@ -13,6 +16,7 @@ const OrderMarkdown = ({ product, register, errors, handleSubmit, onSubmit, dirt
   }
 
 
+  const { telegramApp } = useTgContext();
   const [activeTab, setActiveTab] = useState('Персональні дані');
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
@@ -40,6 +44,19 @@ const OrderMarkdown = ({ product, register, errors, handleSubmit, onSubmit, dirt
       }
     });
   }, [activeTab]);
+
+
+  // const contactSend = () => {
+  //   telegramApp.requestContact(
+  //   (status,req) => {
+  //       const contact = req.responseUnsafe.contact.phone_number
+  //       setValue('phone', contact)
+        
+  //   }
+  //   )
+
+  // }
+
 
   return (
     <>
@@ -94,12 +111,15 @@ const OrderMarkdown = ({ product, register, errors, handleSubmit, onSubmit, dirt
                           className={inputClasses(errors.last_name)}
                         />
                       </label>
-                      <label className="form-control w-full lg:max-w-md mb-3">
+                      <label className="form-control w-full lg:max-w-md mb-3 relative">
                         <div className="label">
                           <span className="label-text">
                             Телефон <span>*</span>
                           </span>
                         </div>
+                        <button className='absolute border-0 top-12 right-3 z-10'>
+                          <RiShareForward2Line className='text-accent w-6 h-6' />
+                        </button>
                         <InputMask
                           mask="+38 (099) 999-99-99"
                           alwaysShowMask
@@ -113,7 +133,8 @@ const OrderMarkdown = ({ product, register, errors, handleSubmit, onSubmit, dirt
                               {...inputProps}
                               type="text"
                               placeholder={errors.phone && "Поле обов'якове"}
-                              className={inputClasses(errors.phone)}
+                              
+                              className={`${inputClasses(errors.phone)} relative`}
                             />
                           )}
                         </InputMask>

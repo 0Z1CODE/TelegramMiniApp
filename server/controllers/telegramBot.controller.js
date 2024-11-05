@@ -19,14 +19,19 @@ export const validateDataFromBot = async (req, res) => {
     CryptoJS.enc.Hex,
   );
 
-
   if (_hash === hash) {
     const data = JSON.parse(initData.get('user'));
+    const query_id = initData.get('query_id');
     const user_inDB = await User.findOne({ telegram_id: data.id });
     const userData = { ...data, sysId: user_inDB._id };
-
-    res.status(200).json({ status: 'ok', userData });
+    res.status(200).json({ status: 'ok', userData, query_id });
   } else {
     res.status(400).json({ status: 'error' });
   }
 };
+
+export const telegramBotHook = async (req, res) => {
+  const { message } = req.body;
+  console.log(message);
+  res.status(200).json({ status: 'ok' });
+}

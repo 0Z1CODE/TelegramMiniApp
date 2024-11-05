@@ -26,6 +26,7 @@ const QuickOrder = () => {
     handleSubmit,
     watch,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm({ reValidateMode: "onChange", mode: "onChange", defaultValues: { first_name: currentUser?.first_name, last_name: currentUser?.last_name } });
 
@@ -72,7 +73,7 @@ const QuickOrder = () => {
 
   return (
     <>
-      <OrderMarkdown product={product} register={register} errors={errors} handleSubmit={handleSubmit} onSubmit={onSubmit} />
+      <OrderMarkdown product={product} setValue = {setValue} register={register} errors={errors} handleSubmit={handleSubmit} onSubmit={onSubmit} />
     </>
   );
 }

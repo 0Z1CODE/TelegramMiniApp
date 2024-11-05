@@ -39,14 +39,28 @@ export const TgProvider = ({ children }) => {
       if (data) {
         const userData = data.data?.userData;
         setCurrentUser(userData);
+        telegramApp.sendData(JSON.stringify({ event: "page_opened" }));
+        
+        
+        
+       
+        
+        // telegramApp.showPopup({
+        //   title: "Welcome",
+        //   message: `Hello, ${userData.first_name}!`,
+        //   buttons: [
+        //     { id: "close", type: "close", text: "Close" },
+        //     { id: "ok", type: "default", text: "OK" }
+        //   ]
+        // });
+
       } else {
         setCurrentUser(localData);
       }
     })
-    .catch((error) => console.log(error));
-      console.log(111);
-      
+      .catch((error) => console.log(error));
+
   }, []);
 
-  return <TgContext.Provider value={{telegramApp}}>{children}</TgContext.Provider>;
+  return <TgContext.Provider value={{ telegramApp }}>{children}</TgContext.Provider>;
 };

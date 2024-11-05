@@ -5,16 +5,17 @@
   "type": "module",
   "scripts": {
     "app": "npm run dev --prefix tgapp",
-    "bot": "nodemon bot/bot",
+    "bot": "nodemon bot/botHook",
     "server": "nodemon server/main",
     "parser": "nodemon parser/parser",
-    "dev": "concurrently \"npm run app\" \"npm run bot\" \"npm run server\""
+    "dev": "concurrently \"npm run app\" \"npm run server\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "assemblyai": "^4.7.1",
     "axios": "^1.7.7",
+    "body-parser": "^1.20.3",
     "cheerio": "^1.0.0",
     "concurrently": "^9.0.1",
     "cookie-parser": "^1.4.7",
@@ -25,6 +26,7 @@
     "mongoose": "^8.7.0",
     "nodemon": "^3.1.7",
     "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "telegraf": "^4.16.3",
     "uniqid": "^5.4.0"
   }
