@@ -1,9 +1,13 @@
-import {io} from './../soket.js'; // Adjust the import path as necessary
+/** @format */
+
+import { io } from './../soket.js'; // Adjust the import path as necessary
 import Payment from './../../db/models/payment.model.js'; // Adjust the import path as necessary
 import Order from './../../db/models/order.model.js'; // Adjust the import path as necessary
+import {bot} from './../../bot/bot.js'; // Adjust the import path as necessary
+import User from './../../db/models/user.model.js'; // Adjust the import path as necessary
 
 export const createPayment = async (req, res) => {
- const data = req.body
+  const data = req.body;
 
   const order = await Order.findOne({ order_id: data.order_id });
 
@@ -15,7 +19,6 @@ export const createPayment = async (req, res) => {
   };
   const newPayment = new Payment(payment);
 
-
   try {
     await newPayment.save();
     res.status(201).json(newPayment);
@@ -24,14 +27,13 @@ export const createPayment = async (req, res) => {
   }
 };
 
-
 export const paymentHook = async (req, res) => {
-  const data = req.body
+  const data = req.body;
   try {
     const payment = await Payment.findOneAndUpdate(
       { invoiceId: data.invoiceId },
       { $set: data },
-      { new: true }
+      { new: true },
     );
 
     if (!payment) {
@@ -40,20 +42,23 @@ export const paymentHook = async (req, res) => {
 
     // Emit socket event
 
-  if (payment) {
-    io.emit('paymentUpdated', payment);
-  }
+    if (payment) {
+      io.emit('paymentUpdated', payment);
+      const user = await User.findOne({ _id: payment.user_id });
+      if (user) {
+        io.to(user._id).emit('paymentUpdated', payment);
+        bot.telegram.sendMessage(user.telegram_id, `Payment status: ${payment.status}`);
+      }
+      
+    }
+    
 
     res.status(200).json(payment);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
- 
 
 
- 
 };
-
-
 
 

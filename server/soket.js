@@ -1,45 +1,48 @@
+/** @format */
+
 import { Server } from 'socket.io';
 import { createServer } from 'http';
 import express from 'express';
-
+import { bot } from '../bot/bot.js';
+import User from '../db/models/user.model.js';
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
-	cors: {
-		origin: '*',
-		methods: [ 'GET', 'POST', 'PUT', 'DELETE' ]
-	}
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  },
 });
 
 const socketMap = {};
 
 export const getReceiversSocketId = (receiverId) => {
-	return socketMap[receiverId];
+  return socketMap[receiverId];
 };
 
-
 io.on('connection', (socket) => {
-	let sysId = socket.handshake.query.sysId;
-	console.log(`A user ${sysId} connected`);
+  let sysId = socket.handshake.query.sysId;
 
-	if (!sysId) {
+  console.log(`A user ${sysId} connected`);
+
+  if (!sysId) {
     console.error('Missing sysId in handshake query');
     socket.disconnect(true);
     return;
   }
 
-	if (typeof sysId !== 'string' || sysId.trim() === '') {
+  if (typeof sysId !== 'string' || sysId.trim() === '') {
     console.error('Invalid sysId');
     socket.disconnect(true);
     return;
   }
 
-	socketMap[sysId] = socket.id;
+  socketMap[sysId] = socket.id;
 
-	socket.on('disconnect', () => {
-		console.log('A user disconnected');
-		delete socketMap[sysId];
-	});
+  socket.on('disconnect', () => {
+    console.log('A user disconnected');
+    delete socketMap[sysId];
+  });
 });
 
 export { app, io, httpServer };
