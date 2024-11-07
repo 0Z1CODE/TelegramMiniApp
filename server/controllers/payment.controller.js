@@ -3,8 +3,8 @@
 import { io } from './../soket.js'; // Adjust the import path as necessary
 import Payment from './../../db/models/payment.model.js'; // Adjust the import path as necessary
 import Order from './../../db/models/order.model.js'; // Adjust the import path as necessary
-import {bot} from './../../bot/bot.js'; // Adjust the import path as necessary
 import User from './../../db/models/user.model.js'; // Adjust the import path as necessary
+import { setPaymantCall } from '../templates/SuccsesPayment.js';
 
 export const createPayment = async (req, res) => {
   const data = req.body;
@@ -45,20 +45,14 @@ export const paymentHook = async (req, res) => {
     if (payment) {
       io.emit('paymentUpdated', payment);
       const user = await User.findOne({ _id: payment.user_id });
-      if (user) {
+      if (user && payment.status === 'success') {
         io.to(user._id).emit('paymentUpdated', payment);
-        bot.telegram.sendMessage(user.telegram_id, `Payment status: ${payment.status}`);
+        setPaymantCall({ params: payment, telegram_id: user.telegram_id });
       }
-      
     }
-    
 
     res.status(200).json(payment);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-
-
 };
-
-

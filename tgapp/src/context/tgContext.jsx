@@ -24,39 +24,13 @@ export const TgProvider = ({ children }) => {
       telegramApp.ready()
     }
     const uData = telegramApp.initData;
-    const localData = {
-      id: 363025560,
-      first_name: 'Max',
-      last_name: 'Soro',
-      username: 'maxSoro',
-      sysId: "670cb8add2a50f3e6397eb24",
-      language_code: 'uk',
-      is_premium: true,
-      allows_write_to_pm: true
-    }
+   
 
     checkData(uData).then((data) => {
       if (data) {
         const userData = data.data?.userData;
         setCurrentUser(userData);
-        telegramApp.sendData(JSON.stringify({ event: "page_opened" }));
-        
-        
-        
-       
-        
-        // telegramApp.showPopup({
-        //   title: "Welcome",
-        //   message: `Hello, ${userData.first_name}!`,
-        //   buttons: [
-        //     { id: "close", type: "close", text: "Close" },
-        //     { id: "ok", type: "default", text: "OK" }
-        //   ]
-        // });
-
-      } else {
-        setCurrentUser(localData);
-      }
+      } 
     })
       .catch((error) => console.log(error));
 

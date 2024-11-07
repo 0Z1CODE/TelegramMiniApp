@@ -20,6 +20,18 @@ const useTelegramData = () => {
     }
   };
 
-  return { checkData };
+  const getLocation = async (chat_id) => {
+    try {
+      setLoading(true);
+      const response  = await $api.post("/telegram/location", {chat_id});
+      setLoading(false);
+
+      return response;
+    } catch (error) {
+      setLoading(false);
+    }
+  }
+
+  return { checkData, getLocation };
 };
 export default useTelegramData;

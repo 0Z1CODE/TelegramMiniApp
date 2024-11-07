@@ -8,6 +8,8 @@ import useDelivery from '../../api/useDelivery'
 import OrderMarkdown from './OrderMarkdown'
 import useOrder from '../../api/useOerder'
 import useUserSettings from '../../../zustand/useUserSettings';
+import useTelegramData from '../../api/useTelegramData'
+
 
 
 const QuickOrder = () => {
@@ -17,7 +19,7 @@ const QuickOrder = () => {
   const [deliveryData, setDeliveryData] = useState(null)
   const { setPageTitle } = useAppSettings()
   const [product, setProduct] = useState(null)
-  // const { telegramApp } = useTgContext()
+  const {getLocation} = useTelegramData()
   const nav = useNavigate()
   const { currentUser } = useUserSettings()
   const params = useParams()
@@ -27,6 +29,8 @@ const QuickOrder = () => {
     watch,
     getValues,
     setValue,
+    control,
+    reset,
     formState: { errors },
   } = useForm({ reValidateMode: "onChange", mode: "onChange", defaultValues: { first_name: currentUser?.first_name, last_name: currentUser?.last_name } });
 
@@ -66,14 +70,20 @@ const QuickOrder = () => {
       },
     }
     createOrder(orderData)
-    .then((data) => nav(`/order-cinfirm/${data.data.order_id}`))
-    .catch((error) => console.log(error));
+      .then((data) => nav(`/order-cinfirm/${data.data.order_id}`))
+      .catch((error) => console.log(error));
   }
 
+  const getTelegramLocation = () => {
+    getLocation(currentUser?.id).then((data) => {
+      console.log(data);
+    }).catch((error) => console.log(error));
+      
+  }
 
   return (
     <>
-      <OrderMarkdown product={product} setValue = {setValue} register={register} errors={errors} handleSubmit={handleSubmit} onSubmit={onSubmit} />
+      <OrderMarkdown product={product} setValue={setValue} control={control} getTelegramLocation={getTelegramLocation} reset={reset} register={register} errors={errors} handleSubmit={handleSubmit} onSubmit={onSubmit} />
     </>
   );
 }

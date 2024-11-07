@@ -35,7 +35,6 @@ const usePaymant = () => {
       .catch((error) => console.log(error));
 
     if (invoice.data.invoiceId) {
-      console.log(111111);
       telegramApp.openLink(invoice.data.pageUrl);
       // window.open(invoice.data.pageUrl, '_blank');
       navigate(`/confirm-payment/${invoice.data.invoiceId}`);

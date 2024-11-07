@@ -8,33 +8,16 @@ import useTelegramData from "./api/useTelegramData";
 const App = () => {
   const { telegramApp } = useTgContext()
   const [userData, setUserData] = useState(null)
-  
-  // useEffect(() => {
-  //   //  telegramApp.ready()
-  //     const uData = telegramApp.initData;
-  //     // console.log(uData);
-  //     setUserData(uData)
-     
-  // }, [])
 
-  // useEffect(() => {
-  //   if(userData) {
-  //     checkData(userData);
-  //   }
-
-  // }, [userData])
-  
-
-
-
-
+  useEffect(() => {
+    if (telegramApp) {
+      console.log("telegramApp", telegramApp.MainButton);
+      
+    }
+  });
   return (
     <>
-      {/* <div>
-        {userData && (
-         <div>{userData}</div>
-        )}
-      </div> */}
+
       <AppRoutes/>
     </>
   )

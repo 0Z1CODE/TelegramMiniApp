@@ -2,6 +2,7 @@
 
 import CryptoJS from 'crypto-js';
 import User from './../../db/models/user.model.js';
+import {bot} from '../../bot/bot.js';
 
 export const validateDataFromBot = async (req, res) => {
   const TELEGRAM_BOT_TOKEN = process.env.BOT_TOKEN;
@@ -30,8 +31,19 @@ export const validateDataFromBot = async (req, res) => {
   }
 };
 
-export const telegramBotHook = async (req, res) => {
-  const { message } = req.body;
-  console.log(message);
-  res.status(200).json({ status: 'ok' });
-}
+export const getTelegtramLocation = async (req, res) => {
+    bot.telegram.sendMessage(req.body.chat_id, 'Відправте вашу локацію', {
+        reply_markup: {
+            keyboard: [
+                [
+                    {
+                        text: 'Відправити локацію',
+                        request_location: true,
+                    },
+                ],
+            ],
+            resize_keyboard: true,
+        },
+
+    });
+};

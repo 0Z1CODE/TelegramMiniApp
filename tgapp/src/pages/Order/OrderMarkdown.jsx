@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import InputMask from 'react-input-mask';
 import { useNavigate } from 'react-router-dom';
 import { RiShareForward2Line } from "react-icons/ri";
 import { useTgContext } from '../../context/tgContext';
+import { Controller } from 'react-hook-form';
 
 
 
-const OrderMarkdown = ({ product, register, errors, handleSubmit, onSubmit, dirtyFields, setValue }) => {
+const OrderMarkdown = ({ getTelegramLocation, product, register, errors, handleSubmit, onSubmit, dirtyFields, setValue, control, reset }) => {
   const inputClasses = (error) => {
     if (error) {
       return 'input input-bordered w-full max-w-lg input-error'
@@ -18,6 +19,7 @@ const OrderMarkdown = ({ product, register, errors, handleSubmit, onSubmit, dirt
 
   const { telegramApp } = useTgContext();
   const [activeTab, setActiveTab] = useState('Персональні дані');
+  const [tgContact, setTgContact] = useState(null)
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
 
@@ -32,9 +34,7 @@ const OrderMarkdown = ({ product, register, errors, handleSubmit, onSubmit, dirt
     }
   };
 
-  useEffect(() => {
 
-  }, [activeTab]);
 
   useEffect(() => {
     const tabs = document.getElementsByName('my_tabs_1');
@@ -45,21 +45,36 @@ const OrderMarkdown = ({ product, register, errors, handleSubmit, onSubmit, dirt
     });
   }, [activeTab]);
 
+  useEffect(() => {
+    return () => {
+      setActiveTab('Персональні дані');
+      reset({
+        first_name: '',
+        last_name: '',
+        phone: '',
+        email: '',
+        delivery: 'myself',
+        payment: 'cash'
+      });
+    };
+  }, []);
 
-  // const contactSend = () => {
-  //   telegramApp.requestContact(
-  //   (status,req) => {
-  //       const contact = req.responseUnsafe.contact.phone_number
-  //       setValue('phone', contact)
-        
-  //   }
-  //   )
 
-  // }
+  const sendContact = () => {
+    telegramApp.requestContact((status, req) => {
+      if (status === true) {
+        setValue('phone', req.responseUnsafe.contact.phone_number)
+      }
+    })
+  }
+
+
+
 
 
   return (
     <>
+      <h1 className="text-3xl font-bold text-center" onClick={getTelegramLocation}>Швидке замовлення</h1>
       <section>
         {product && (
           <div className="card lg:card-side bg-base-100 shadow-md">
@@ -117,10 +132,10 @@ const OrderMarkdown = ({ product, register, errors, handleSubmit, onSubmit, dirt
                             Телефон <span>*</span>
                           </span>
                         </div>
-                        <button className='absolute border-0 top-12 right-3 z-10'>
-                          <RiShareForward2Line className='text-accent w-6 h-6' />
-                        </button>
-                        <InputMask
+                      
+                        <RiShareForward2Line className='text-accent w-6 h-6 absolute top-12 right-2 z-10' onClick={sendContact} />
+                 
+                        {/* <InputMask
                           mask="+38 (099) 999-99-99"
                           alwaysShowMask
                           {...register("phone", {
@@ -133,11 +148,39 @@ const OrderMarkdown = ({ product, register, errors, handleSubmit, onSubmit, dirt
                               {...inputProps}
                               type="text"
                               placeholder={errors.phone && "Поле обов'якове"}
-                              
+
                               className={`${inputClasses(errors.phone)} relative`}
                             />
                           )}
-                        </InputMask>
+                        </InputMask> */}
+                        <Controller
+                          name="phone"
+                          control={control}
+                          defaultValue=""
+                          rules={{
+                            required: true,
+                          }}
+                          render={({ field }) => (
+                            <InputMask
+                              mask="+38 (099) 999-99-99"
+                              alwaysShowMask
+                              onChange={field.onChange}
+                              onPaste={field.onPaste}
+                              value={field.value}
+                              onBlur={field.onBlur}
+                            >
+                              {(inputProps) => (
+                                <input
+                                  {...inputProps}
+                                  type="text"
+                                  placeholder={errors.phone && "Поле обов'якове"}
+
+                                  className={`${inputClasses(errors.phone)} relative`}
+                                />
+                              )}
+                            </InputMask>
+                          )}
+                        />
                       </label>
                       <label className="form-control w-full lg:max-w-md mb-3">
                         <div className="label">

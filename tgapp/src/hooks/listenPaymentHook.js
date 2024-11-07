@@ -14,8 +14,6 @@ export const usePaumantHook = () => {
     const handlePaymentUpdated = (updatedPayment) => {
       if (updatedPayment.invoiceId === _id && updatedPayment.user_id === sysId) {
         setPayment(updatedPayment);
-      } else {
-        console.log('error:', updatedPayment);
       }
     };
 

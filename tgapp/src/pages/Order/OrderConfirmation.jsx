@@ -52,6 +52,7 @@ const sendOrder = async () => {
   telegramApp.MainButton.text = "Сплатити"
   telegramApp.MainButton.onClick(sendOrder)
   return () => {
+    telegramApp.MainButton.offClick(sendOrder)
     telegramApp.MainButton.hide()
   }
  }

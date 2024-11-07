@@ -29,10 +29,11 @@ const ReadyPcPage = () => {
     telegramApp.MainButton.onClick(() => navigate(`/quick-order/${product_code}`));
     telegramApp.MainButton.text = "Придбати зараз";
     return () => {
+      telegramApp.MainButton.offClick(() => navigate(`/quick-order/${product_code}`));
       telegramApp.MainButton.hide();
     }
 
-  }, [product])
+  }, [])
 
 
   return (
