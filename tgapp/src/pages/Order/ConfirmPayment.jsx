@@ -19,7 +19,7 @@ const ConfirmPayment = () => {
       {payment?.status === "success" ? (
         <div>
           <h2>Ваш платіж успішно здійснено. Дякуємо за покупку.</h2>
-          <div> Сума: {(payment?.amount)/100} </div>
+          <div> Сума: {(payment?.amount) / 100} </div>
           <div> Наш адміністратор скоро звяжеться з Вами </div>
 
 

@@ -18,8 +18,9 @@ const QuickOrder = () => {
   const { getProductById, loading } = useProducts()
   const [deliveryData, setDeliveryData] = useState(null)
   const { setPageTitle } = useAppSettings()
+  const [loader, setLoader] = useState(false);
   const [product, setProduct] = useState(null)
-  const {getLocation} = useTelegramData()
+  const { getLocation } = useTelegramData()
   const nav = useNavigate()
   const { currentUser } = useUserSettings()
   const params = useParams()
@@ -61,13 +62,14 @@ const QuickOrder = () => {
         }
       ],
       delivery: data.delivery,
-      payment: "online",
+      payment: data.payment,
       oreder_owner: {
         first_name: data.first_name,
         last_name: data.last_name,
         phone: data.phone,
         email: data.email,
       },
+      delivery_info: data.delivery_info,
     }
     createOrder(orderData)
       .then((data) => nav(`/order-cinfirm/${data.data.order_id}`))
@@ -75,15 +77,27 @@ const QuickOrder = () => {
   }
 
   const getTelegramLocation = () => {
+    setLoader(true);
     getLocation(currentUser?.id).then((data) => {
       console.log(data);
     }).catch((error) => console.log(error));
-      
+
   }
 
   return (
     <>
-      <OrderMarkdown product={product} setValue={setValue} control={control} getTelegramLocation={getTelegramLocation} reset={reset} register={register} errors={errors} handleSubmit={handleSubmit} onSubmit={onSubmit} />
+      <OrderMarkdown
+        product={product}
+        loader={loader}
+        setLoader={setLoader}
+        watch={watch}
+        setValue={setValue}
+        control={control}
+        getTelegramLocation={getTelegramLocation}
+        reset={reset} register={register}
+        errors={errors}
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit} />
     </>
   );
 }

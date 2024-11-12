@@ -4,10 +4,24 @@ import { useNavigate } from 'react-router-dom';
 import { RiShareForward2Line } from "react-icons/ri";
 import { useTgContext } from '../../context/tgContext';
 import { Controller } from 'react-hook-form';
+import { useLocationHook } from '../../hooks/listenLocationHook';
 
 
-
-const OrderMarkdown = ({ getTelegramLocation, product, register, errors, handleSubmit, onSubmit, dirtyFields, setValue, control, reset }) => {
+const OrderMarkdown = (
+  { 
+  loader, 
+  setLoader, 
+  getTelegramLocation, 
+  product, 
+  register, 
+  errors, 
+  handleSubmit, 
+  onSubmit, 
+  watch, 
+  setValue, 
+  control, 
+  reset 
+}) => {
   const inputClasses = (error) => {
     if (error) {
       return 'input input-bordered w-full max-w-lg input-error'
@@ -20,8 +34,10 @@ const OrderMarkdown = ({ getTelegramLocation, product, register, errors, handleS
   const { telegramApp } = useTgContext();
   const [activeTab, setActiveTab] = useState('Персональні дані');
   const [tgContact, setTgContact] = useState(null)
+  const { location } = useLocationHook();
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
+
 
   const buttonClick = () => {
     if (activeTab === 'Персональні дані') {
@@ -34,6 +50,14 @@ const OrderMarkdown = ({ getTelegramLocation, product, register, errors, handleS
     }
   };
 
+
+  useEffect(() => {
+    console.log(location);
+    if (location) {
+      setLoader(false);
+      setValue('delivery_info', location);
+    }
+  }, [location]);
 
 
   useEffect(() => {
@@ -74,7 +98,7 @@ const OrderMarkdown = ({ getTelegramLocation, product, register, errors, handleS
 
   return (
     <>
-      <h1 className="text-3xl font-bold text-center" onClick={getTelegramLocation}>Швидке замовлення</h1>
+      {/* <h1 className="text-3xl font-bold text-center" onClick={getTelegramLocation}>Швидке замовлення</h1> */}
       <section>
         {product && (
           <div className="card lg:card-side bg-base-100 shadow-md">
@@ -132,27 +156,9 @@ const OrderMarkdown = ({ getTelegramLocation, product, register, errors, handleS
                             Телефон <span>*</span>
                           </span>
                         </div>
-                      
-                        <RiShareForward2Line className='text-accent w-6 h-6 absolute top-12 right-2 z-10' onClick={sendContact} />
-                 
-                        {/* <InputMask
-                          mask="+38 (099) 999-99-99"
-                          alwaysShowMask
-                          {...register("phone", {
-                            required: true,
-                            pattern: /^\+38 \(\d{3}\) \d{3}-\d{2}-\d{2}$/,
-                          })}
-                        >
-                          {(inputProps) => (
-                            <input
-                              {...inputProps}
-                              type="text"
-                              placeholder={errors.phone && "Поле обов'якове"}
 
-                              className={`${inputClasses(errors.phone)} relative`}
-                            />
-                          )}
-                        </InputMask> */}
+                        <RiShareForward2Line className='text-accent w-6 h-6 absolute top-12 right-2 z-10' onClick={sendContact} />
+
                         <Controller
                           name="phone"
                           control={control}
@@ -223,11 +229,23 @@ const OrderMarkdown = ({ getTelegramLocation, product, register, errors, handleS
                         </div>
                       </div>
                       <div className="form-control w-full lg:max-w-md mb-3">
-                        {/* {watch("delivery") === "delivery" && (
-                          <div>sadsadsad</div>
-                        )} */}
+                        {watch("delivery") === "delivery" && (
+                          <button onClick={getTelegramLocation} type="button" className='w-full btn btn-base'>
+                            {loader ? (<span className="loading loading-spinner"></span>) : ('Надіслати мої координати')}
+                            
+
+                          </button>
+                        )}
                       </div>
-                      {/* <button onClick={handleSubmit(onSubmit)}>Перевірити</button> */}
+                      {location && (
+                        <div className="form-control w-full lg:max-w-md mb-3">
+                          <p>Ваша адреса {location.display_name}</p>
+                          <input
+                            type="hidden"
+                            name = "delivery_info"
+                            {...register("delivery_info")} />
+                        </div>
+                      )}
                     </div>
                     <input
                       type="radio"
@@ -240,13 +258,13 @@ const OrderMarkdown = ({ getTelegramLocation, product, register, errors, handleS
                     <div role="tabpanel" className="tab-content py-3">
                       <div className="form-control w-full lg:max-w-md mb-3  border p-3 border-accent rounded-xl">
                         <div className='flex'>
-                          <input type="radio" name="delivery" value="cash" {...register("payment")} className="radio radio-accent" defaultChecked />
+                          <input type="radio" name="payment" value="cash" {...register("payment")} className="radio radio-accent" defaultChecked />
                           <p className='text-right'>Оплата при отриманні</p>
                         </div>
                       </div>
                       <div className="form-control w-full lg:max-w-md mb-3  border p-3 border-accent rounded-xl">
                         <div className='flex'>
-                          <input type="radio" name="delivery" value="online"  {...register("payment")} className="radio radio-accent" />
+                          <input type="radio" name="payment" value="online"  {...register("payment")} className="radio radio-accent" />
                           <p className='text-right'>Оплатити зараза (Visa/MAstercard)</p>
                         </div>
                       </div>

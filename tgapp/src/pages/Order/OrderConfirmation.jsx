@@ -48,11 +48,23 @@ const sendOrder = async () => {
 
   useEffect(() => {
  if (orderInfo) {
-  telegramApp.MainButton.show()
-  telegramApp.MainButton.text = "Сплатити"
-  telegramApp.MainButton.onClick(sendOrder)
+  console.log(orderInfo?.payment);
+  
+
+   if (orderInfo?.payment === "cash") {
+     telegramApp.MainButton.show()
+     telegramApp.MainButton.text = "Завершити"
+     telegramApp.MainButton.onClick(() => {})
+   }
+  if(orderInfo?.payment === "online") {
+    telegramApp.MainButton.show()
+    telegramApp.MainButton.text = "Сплатити"
+    telegramApp.MainButton.onClick(sendOrder)
+  }
+ 
   return () => {
-    telegramApp.MainButton.offClick(sendOrder)
+    if (orderInfo.payment === "online") telegramApp.MainButton.offClick(sendOrder)
+    if (orderInfo.payment === "cash") telegramApp.MainButton.offClick(() => {})
     telegramApp.MainButton.hide()
   }
  }
