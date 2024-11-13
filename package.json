@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apexify": "^4.2.8",
     "assemblyai": "^4.7.1",
     "axios": "^1.7.7",
     "body-parser": "^1.20.3",

@@ -4,6 +4,7 @@ import { Markup, Telegraf } from 'telegraf';
 import { message, callbackQuery } from 'telegraf/filters';
 import { fileURLToPath } from 'url';
 import Order from '../db/models/order.model.js';
+import { ApexImageAnalyzer } from 'apexify.js'; 
 
 import dotenv from 'dotenv';
 import path from 'path';
@@ -86,6 +87,21 @@ bot.on(callbackQuery('data'), async (ctx) => {
         order.payment === 'cash' ? 'Оплата при отриманні' : 'Онлайн'
       }`
     );
+  }
+});
+bot.on(message('photo'), async (ctx) => {
+  const photo = ctx.message.photo;
+  if (photo && photo.length > 0) {
+    const fileId = photo[photo.length - 1].file_id; // Get the highest resolution photo
+    const fileUrl = await bot.telegram.getFileLink(fileId);
+  
+    const prompt = 'What can you tell me about this image?';
+    const analysisResult = await ApexImageAnalyzer({ imgURL: fileUrl, prompt });
+
+    ctx.reply(`Дякуємо за надане фото! Ось посилання на нього: ${fileUrl}`);
+    ctx.reply(`Результат аналізу: ${analysisResult}`);
+  } else {
+    ctx.reply('Будь ласка, надішліть фото.');
   }
 });
 
