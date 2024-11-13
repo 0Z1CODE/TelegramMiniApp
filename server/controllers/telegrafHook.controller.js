@@ -8,7 +8,6 @@ import dotenv from 'dotenv';
 import axios from 'axios';
 import { io } from './../soket.js'; // Adjust the import path as necessary
 
-
 dotenv.config();
 
 export const telegrafHook = async (req, res) => {
@@ -28,12 +27,16 @@ export const telegrafHook = async (req, res) => {
           message.chat.id,
           `Ваша локація: ${response.data.display_name}`,
           {
-            reply_markup: {remove_keyboard: true},
+            reply_markup: { remove_keyboard: true },
           },
         );
         io.emit('location', response.data);
       })
       .catch((error) => console.log(error));
   }
-  console.log('Bot hook is used111');
+
+ 
+
+
+  console.log('Bot hook is used');
 };

@@ -88,6 +88,10 @@ const orderSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 			default: 'new'
+		},
+		admin: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User'
 		}
 	},
 	{ timestamps: true }

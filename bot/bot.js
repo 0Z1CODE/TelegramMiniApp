@@ -1,9 +1,9 @@
-
+/** @format */
 
 import { Markup, Telegraf } from 'telegraf';
-
-import { message , callbackQuery} from 'telegraf/filters';
+import { message, callbackQuery } from 'telegraf/filters';
 import { fileURLToPath } from 'url';
+import Order from '../db/models/order.model.js';
 
 import dotenv from 'dotenv';
 import path from 'path';
@@ -28,7 +28,7 @@ await connectToMongoDb();
 bot.telegram.setMyCommands([
   { command: '/start', description: 'Start' },
   { command: '/store', description: 'Store' },
-  { command: "/oldschool", description: "oldschool" },
+  { command: '/oldschool', description: 'oldschool' },
 ]);
 
 bot.start(async (ctx) => {
@@ -44,16 +44,13 @@ bot.start(async (ctx) => {
 bot.command('store', (ctx) =>
   ctx.reply(
     'Відвідайте наш магазин',
-    Markup.inlineKeyboard([
-      Markup.button.webApp('Магазин', App_URL)
-    ]).resize(),
+    Markup.inlineKeyboard([Markup.button.webApp('Магазин', App_URL)]).resize(),
   ),
 );
 
 bot.on(callbackQuery('web_app_data'), (ctx) => {
   ctx.answerCbQuery('Ви відкрили веб-додаток!');
 });
-
 
 bot.on(message('voice'), async (ctx) => {
   voiceMsgHendler(__dirname, bot, ctx);
@@ -68,6 +65,30 @@ bot.on(message('contact'), async (ctx) => {
   }
 });
 
+bot.on(callbackQuery('data'), async (ctx) => {
+  const data = ctx.callbackQuery.data;
+  if (data.includes('order_info')) {
+    const order_id = data.split('_')[2];
+    const order = await Order.findOne({ order_id }).populate(
+      'products.product',
+    );
+    bot.telegram.sendMessage(
+      process.env.ADMIN_CHAT_ID,
+      `Інформація про замовлення:\nНомер замовлення: ${
+        order.order_id
+      } \n Товар: ${order.products[0].product.title} \n Загальна сума: ${
+        order.total_price
+      } \n Отримувач: ${order.oreder_owner.first_name} ${
+        order.oreder_owner.last_name
+      } \n Телефон: ${order.oreder_owner.phone} \n Доставка: ${
+        order.delivery === 'delivery' ? 'Доставка' : 'Самовивіз'
+      } \n Оплата: ${
+        order.payment === 'cash' ? 'Оплата при отриманні' : 'Онлайн'
+      }`
+    );
+  }
+});
+
 bot.launch({
   webhook: {
     domain: `${SERVER_URL}/telegraf/:token`,
@@ -77,5 +98,3 @@ bot.launch({
     pendingUpdateLimit: 3,
   },
 });
-
-
