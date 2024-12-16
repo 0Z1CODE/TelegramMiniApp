@@ -14,16 +14,11 @@ import {app, io, httpServer} from './soket.js';
 import bodyParser from 'body-parser';
 import { Telegraf } from 'telegraf';
 import botRoutes from './routes/telegraf.routes.js';
-// import { ApexImageAnalyzer } from 'apexify.js'; 
 
 
 dotenv.config();
 
-// const imageUrl =
-//   'https://content.rozetka.com.ua/goods/images/big/437818414.jpg'; // URL of the image to analyze
-// const prompt = 'Get the product name of this image.';
-// const analysisResult = await ApexImageAnalyzer({ imgURL: imageUrl, prompt });
-// console.log(analysisResult); // Logs the analysis result from Groq
+
 
 
 const __filename = fileURLToPath(import.meta.url);

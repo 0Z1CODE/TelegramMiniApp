@@ -29,7 +29,7 @@ await connectToMongoDb();
 bot.telegram.setMyCommands([
   { command: '/start', description: 'Start' },
   { command: '/store', description: 'Store' },
-  { command: '/oldschool', description: 'oldschool' },
+  // { command: '/oldschool', description: 'oldschool' },
 ]);
 
 bot.start(async (ctx) => {
@@ -94,8 +94,11 @@ bot.on(message('photo'), async (ctx) => {
   if (photo && photo.length > 0) {
     const fileId = photo[photo.length - 1].file_id; // Get the highest resolution photo
     const fileUrl = await bot.telegram.getFileLink(fileId);
-  
+
     const prompt = 'What can you tell me about this image?';
+    // const prompt = 'Tell me about this product';
+    // const prompt = 'I need to know brand from image';
+
     const analysisResult = await ApexImageAnalyzer({ imgURL: fileUrl, prompt });
 
     ctx.reply(`Дякуємо за надане фото! Ось посилання на нього: ${fileUrl}`);
