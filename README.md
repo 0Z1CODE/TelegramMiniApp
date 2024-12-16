@@ -1,6 +1,7 @@
 # TofAi Pravtice Telegram bot with MiniApp
 
-## Bot link 
+## Bot name 
+@MarokhonkoStore_bot
 
 ## Back-end Libraries
 
